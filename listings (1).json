@@ -1,0 +1,11 @@
+{
+  "updated_at": "1970-01-01T00:00:00+00:00",
+  "stats": {
+    "active_total": 0,
+    "inactive_total": 0,
+    "by_portal": {}
+  },
+  "listings": [],
+  "events": [],
+  "price_history": {}
+}
