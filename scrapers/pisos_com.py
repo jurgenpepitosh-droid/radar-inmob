@@ -1,4 +1,4 @@
-"""Pisos.com scraper - updated selectors based on real HTML inspection."""
+"""Pisos.com scraper - uses id and data-lnk-href attributes (stable)."""
 from __future__ import annotations
 
 import re
@@ -63,56 +63,50 @@ class PisosComScraper(BaseScraper):
         soup = BeautifulSoup(html, "lxml")
         out: List[Listing] = []
 
-        # Per diagnostic: 54 div.ad-preview__product matches
-        cards = (
-            soup.select("div.ad-preview")
-            or soup.select("div[class*='ad-preview']")
-            or soup.select("div.ad-preview__product")
-        )
+        # Pisos cards have data-lnk-href on the outer div.ad-preview
+        cards = soup.select("div.ad-preview[data-lnk-href]")
 
-        # Pisos sometimes wraps each card in a container; drill up if needed
-        # But typically the 'ad-preview__product' is inside 'div.ad-preview'
-        # We prefer the outer container if it has more info.
         seen_ids = set()
         for card in cards:
-            # Find the link to the detail page (pattern: /alquiler/piso-...-NNNNNNNNN/)
-            link_el = None
-            for a in card.select("a[href]"):
-                href = a.get("href", "")
-                # Detail URLs end in /NNNNN/ and are under /alquiler/
-                if re.search(r"/alquiler/[^/]+-\d{6,}/?$", href):
-                    link_el = a
-                    break
-            if not link_el:
-                # Fallback: any anchor ending in long number
-                for a in card.select("a[href]"):
-                    href = a.get("href", "")
-                    if re.search(r"-\d{7,}/?$", href) and "/alquiler/" in href:
-                        link_el = a
-                        break
-
-            if not link_el:
+            href = card.get("data-lnk-href", "").strip()
+            if not href:
                 continue
-
-            href = link_el.get("href", "")
             url = urljoin(self.BASE, href)
-            m = re.search(r"(\d{6,})/?$", url.rstrip("/"))
-            if not m:
-                continue
-            ext_id = m.group(1)
-            if ext_id in seen_ids:
+
+            # Extract external_id from the div's id attribute (format: "63386499540.106400")
+            # or as fallback from the URL
+            ext_id = card.get("id", "").strip()
+            if not ext_id:
+                m = re.search(r"-(\d+[_\d]*)/?$", href)
+                if m:
+                    ext_id = m.group(1)
+            if not ext_id or ext_id in seen_ids:
                 continue
             seen_ids.add(ext_id)
 
-            title = link_el.get("title") or link_el.get_text(" ", strip=True) or "Anuncio Pisos.com"
+            # Title: img alt inside the carousel
+            title = ""
+            img = card.select_one("img[alt]")
+            if img:
+                title = img.get("alt", "").strip()
+            if not title:
+                title = "Anuncio Pisos.com"
 
-            card_text = card.get_text(" ", strip=True)
-            price = self._extract_price(card_text)
+            # Price: explicit selector span.ad-preview__price
+            price = None
+            price_el = card.select_one("span.ad-preview__price")
+            if price_el:
+                # Price text is "1.050 €/mes" - strip "/mes" by taking only the main number
+                price_text = price_el.get_text(" ", strip=True)
+                price = self._extract_price(price_text)
+            if not price:
+                price = self._extract_price(card.get_text(" ", strip=True))
             if not price:
                 continue
 
-            rooms = self._extract_rooms(card_text)
-            size = self._extract_size(card_text)
+            text = card.get_text(" ", strip=True)
+            rooms = self._extract_rooms(text)
+            size = self._extract_size(text)
 
             out.append(Listing(
                 portal=self.portal_name,
@@ -130,6 +124,7 @@ class PisosComScraper(BaseScraper):
     def _extract_price(text: str) -> int | None:
         if not text:
             return None
+        # "1.050 €" or "1050€" - take first plausible rent number
         matches = re.findall(r"(\d{3,5}(?:[\.,]\d{3})?)\s*€", text.replace("\u00a0", " "))
         for m in matches:
             n = int(re.sub(r"[^\d]", "", m))
