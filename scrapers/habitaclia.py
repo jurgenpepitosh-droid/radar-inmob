@@ -1,16 +1,13 @@
-"""Habitaclia scraper - updated selectors based on real HTML inspection."""
+"""Habitaclia scraper - uses data-id and data-href attributes (stable)."""
 from __future__ import annotations
 
 import re
 from typing import List
-from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 
 from core.models import Listing
 from scrapers.base import BaseScraper
-
-ID_RE = re.compile(r"-(\d{5,})\.htm")
 
 
 class HabitacliaScraper(BaseScraper):
@@ -43,8 +40,6 @@ class HabitacliaScraper(BaseScraper):
 
                     await self._try_accept_cookies(page)
                     await self._polite_wait(1.5, 3.0)
-
-                    # Scroll to trigger lazy-loaded images
                     await page.evaluate("window.scrollTo(0, document.body.scrollHeight/2)")
                     await self._polite_wait(1.0, 1.5)
 
@@ -69,57 +64,46 @@ class HabitacliaScraper(BaseScraper):
         soup = BeautifulSoup(html, "lxml")
         out: List[Listing] = []
 
-        # Per diagnostic: top selectors are 'article[class*='item']' (30)
-        # and the cards use class 'list-item' (30 matches)
-        cards = soup.select("article.list-item") or soup.select("article[class*='list-item']")
-        if not cards:
-            cards = soup.select("article[class*='item']")
+        cards = soup.select("article[data-id][data-href]")
 
         seen_ids = set()
         for card in cards:
-            # The card has multiple links; we need one pointing to a detail page
-            # Detail links match pattern /alquiler-...-NNNNN.htm or similar
-            link_el = None
-            for a in card.select("a[href]"):
-                href = a.get("href", "")
-                if ID_RE.search(href):
-                    link_el = a
-                    break
-            if not link_el:
-                continue
-
-            href = link_el.get("href", "")
-            url = urljoin(self.BASE, href)
-            m = ID_RE.search(url)
-            if not m:
-                continue
-            ext_id = m.group(1)
-            if ext_id in seen_ids:
+            ext_id = card.get("data-id", "").strip()
+            href = card.get("data-href", "").strip()
+            if not ext_id or not href or ext_id in seen_ids:
                 continue
             seen_ids.add(ext_id)
 
-            title = (
-                link_el.get("title")
-                or link_el.get_text(" ", strip=True)
-                or "Anuncio Habitaclia"
-            )
+            url = href.split("?")[0]
 
-            # Price: look for € sign anywhere in the card
-            card_text = card.get_text(" ", strip=True)
-            price = self._extract_price(card_text)
+            title = ""
+            img = card.select_one("img[alt]")
+            if img:
+                title = img.get("alt", "").strip()
+            if not title:
+                h = card.select_one("h2, h3")
+                if h:
+                    title = h.get_text(" ", strip=True)
+            if not title:
+                title = "Anuncio Habitaclia"
+
+            price = None
+            price_el = card.select_one("span[itemprop='price']")
+            if price_el:
+                price = self._extract_price(price_el.get_text())
+            if not price:
+                price = self._extract_price(card.get_text(" ", strip=True))
             if not price:
                 continue
 
-            rooms = self._extract_rooms(card_text)
-            size = self._extract_size(card_text)
+            text = card.get_text(" ", strip=True)
+            rooms = self._extract_rooms(text)
+            size = self._extract_size(text)
 
-            # Location within the card
-            loc_el = (
-                card.select_one("[class*='location']")
-                or card.select_one("[class*='poblacion']")
-                or card.select_one("h3 a, h2 a")
-            )
-            raw_loc = loc_el.get_text(" ", strip=True) if loc_el else ""
+            raw_loc = ""
+            loc_el = card.select_one("[class*='location']") or card.select_one("span[class*='poblacion']")
+            if loc_el:
+                raw_loc = loc_el.get_text(" ", strip=True)[:200]
 
             out.append(Listing(
                 portal=self.portal_name,
@@ -130,7 +114,7 @@ class HabitacliaScraper(BaseScraper):
                 rooms=rooms,
                 size_m2=size,
                 location=location_label,
-                raw_location=raw_loc[:200],
+                raw_location=raw_loc,
             ))
         return out
 
@@ -138,11 +122,10 @@ class HabitacliaScraper(BaseScraper):
     def _extract_price(text: str) -> int | None:
         if not text:
             return None
-        # Find patterns like "1.200 €" or "1200€" - rent only (avoid prices >10000)
         matches = re.findall(r"(\d{3,5}(?:[\.,]\d{3})?)\s*€", text.replace("\u00a0", " "))
         for m in matches:
             n = int(re.sub(r"[^\d]", "", m))
-            if 200 <= n <= 9000:  # plausible rent range
+            if 200 <= n <= 9000:
                 return n
         return None
 
