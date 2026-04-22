@@ -67,14 +67,17 @@ jobs:
             python main.py
           fi
 
-- name: Commit data updates
+      - name: Commit data updates
         if: github.event.inputs.dry_run != 'true'
         run: |
           git config user.name "scraper-bot"
           git config user.email "scraper-bot@users.noreply.github.com"
-          # Add only files that exist (first run may not have a .db yet)
-          [ -f data/listings.db ] && git add data/listings.db || echo "no db yet"
-          [ -f data/listings.json ] && git add data/listings.json || echo "no json yet"
+          if [ -f data/listings.db ]; then
+            git add data/listings.db
+          fi
+          if [ -f data/listings.json ]; then
+            git add data/listings.json
+          fi
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
@@ -84,8 +87,11 @@ jobs:
           fi
 
       - name: Copy snapshot for dashboard
-        if: github.event.inputs.dry_run != 'true'
-        run: cp data/listings.json dashboard/listings.json
+        if: github.event.inputs.dry_run != 'true' && always()
+        run: |
+          if [ -f data/listings.json ]; then
+            cp data/listings.json dashboard/listings.json
+          fi
 
       - name: Upload Pages artifact
         if: github.event.inputs.dry_run != 'true'
