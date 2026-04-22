@@ -1,50 +1,61 @@
-"""Audita todos los archivos comparando tamaños y primera línea."""
-import os
+"""Inspecciona qué selectores funcionan en cada portal."""
+import asyncio
+import re
+from playwright.async_api import async_playwright
 
-EXPECTED = {
-    "main.py":              (3200, '"""Entry point for the scraper.'),
-    "config.yml":           (2000, "db_path: data/listings.db"),
-    "requirements.txt":     (150, "playwright==1.47.0"),
-    "core/__init__.py":     (0, ""),
-    "core/models.py":       (1500, '"""Core data models."""'),
-    "core/storage.py":      (10000, '"""SQLite storage'),
-    "core/notifier.py":     (4500, '"""Telegram notifier."""'),
-    "scrapers/__init__.py": (570, '"""Scraper registry'),
-    "scrapers/base.py":     (3400, '"""Base scraper'),
-    "scrapers/idealista.py":(9000, '"""Idealista scraper.'),
-    "scrapers/fotocasa.py": (5000, '"""Fotocasa scraper'),
-    "scrapers/habitaclia.py":(4200, '"""Habitaclia scraper'),
-    "scrapers/pisos_com.py":(4000, '"""Pisos.com scraper."""'),
-}
+TARGETS = [
+    ("fotocasa", "https://www.fotocasa.es/es/alquiler/viviendas/sant-cugat-del-valles/todas-las-zonas/l?maxPrice=1500&minRooms=2"),
+    ("habitaclia", "https://www.habitaclia.com/alquiler-sant_cugat_del_valles.htm?price_max=1500&room_min=2"),
+    ("pisos", "https://www.pisos.com/alquiler/pisos-sant_cugat_del_valles/hasta-1500/2-habitaciones-mas/"),
+]
 
-print("=" * 70)
-print("AUDITORÍA")
-print("=" * 70)
-print(f"{'FILE':<30} {'SIZE':>8} {'EXPECTED':>10} {'STATUS':<10}")
-print("-" * 70)
+CANDIDATE_SELECTORS = [
+    "article",
+    "article[class*='item']",
+    "article[class*='card']",
+    "article[class*='ad']",
+    "article[class*='Card']",
+    "div[class*='card']",
+    "div[class*='Card']",
+    "div[class*='item']",
+    "div[class*='listing']",
+    "div[class*='Listing']",
+    "div[class*='Property']",
+    "div[class*='product']",
+    "li[class*='item']",
+    "li[class*='card']",
+    "[data-testid*='card']",
+    "[data-testid*='item']",
+    "[data-testid*='listing']",
+    "[data-cy*='listing']",
+]
 
-problems = []
-for path, (expected_size, expected_start) in EXPECTED.items():
-    if not os.path.exists(path):
-        print(f"{path:<30} {'-':>8} {expected_size:>10} MISSING")
-        problems.append(path)
-        continue
-    content = open(path, encoding="utf-8", errors="replace").read()
-    size = len(content)
-    first_line = content.split("\n", 1)[0][:50] if content else "(empty)"
 
-    ok_size = size > expected_size * 0.7  # at least 70% of expected
-    ok_start = (expected_start == "" and size < 20) or first_line.startswith(expected_start[:25])
-    status = "OK" if (ok_size and ok_start) else "BROKEN"
-    if status == "BROKEN":
-        problems.append(path)
+async def inspect(name, url):
+    print(f"\n{'='*70}")
+    print(f"PORTAL: {name}")
+    print(f"URL: {url}")
+    print("=" * 70)
 
-    print(f"{path:<30} {size:>8} {expected_size:>10} {status:<10}")
-    if status == "BROKEN":
-        print(f"  └─ first line: {first_line!r}")
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
+        )
+        ctx = await browser.new_context(
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15",
+            locale="es-ES",
+            viewport={"width": 1366, "height": 820},
+        )
+        page = await ctx.new_page()
+        try:
+            await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        except Exception as e:
+            print(f"  goto FAILED: {e}")
+            await browser.close()
+            return
 
-print("=" * 70)
-print(f"BROKEN FILES ({len(problems)}):")
-for p in problems:
-    print(f"  - {p}")
-print("=" * 70)
+        # Accept cookies
+        for sel in ["#didomi-notice-agree-button", "button#onetrust-accept-btn-handler",
+                    "button:has-text('Aceptar')", "button:has-text('Acepto')"]:
+            try:
