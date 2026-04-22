@@ -1,14 +1,33 @@
 {
-  "updated_at": "2026-04-22T11:00:04.549473+00:00",
+  "updated_at": "2026-04-22T11:45:52.224110+00:00",
   "stats": {
     "active_total": 55,
-    "inactive_total": 0,
+    "inactive_total": 1,
     "by_portal": {
       "pisos": 43,
       "habitaclia": 12
     }
   },
   "listings": [
+    {
+      "uid": "pisos:63431483451.142600",
+      "portal": "pisos",
+      "external_id": "63431483451.142600",
+      "url": "https://www.pisos.com/alquilar/piso-ca_naurell08224-63431483451_142600/",
+      "title": "Piso en Carrer de Volta",
+      "price": 795,
+      "rooms": 4,
+      "bathrooms": null,
+      "size_m2": 114,
+      "location": "Rubí",
+      "raw_location": "",
+      "description": "",
+      "first_seen": "2026-04-22T11:45:51.836362+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
+      "is_active": true,
+      "images": [],
+      "features": []
+    },
     {
       "uid": "pisos:63372348409.109800",
       "portal": "pisos",
@@ -23,7 +42,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -42,7 +61,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -61,7 +80,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -80,7 +99,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -99,7 +118,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -118,7 +137,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -137,7 +156,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -156,7 +175,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -175,7 +194,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -194,7 +213,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -213,7 +232,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -232,7 +251,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -251,7 +270,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -270,7 +289,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -289,7 +308,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -308,7 +327,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -327,7 +346,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -346,7 +365,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -365,26 +384,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
-      "is_active": true,
-      "images": [],
-      "features": []
-    },
-    {
-      "uid": "pisos:34192337117.500806",
-      "portal": "pisos",
-      "external_id": "34192337117.500806",
-      "url": "https://www.pisos.com/alquilar/piso-la_cogullada08224-34192337117_500806/",
-      "title": "Piso en Plaça de les Josefines",
-      "price": 850,
-      "rooms": 3,
-      "bathrooms": null,
-      "size_m2": 92,
-      "location": "Rubí",
-      "raw_location": "",
-      "description": "",
-      "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -403,7 +403,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -422,7 +422,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -441,7 +441,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -460,7 +460,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -479,7 +479,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -498,7 +498,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -517,7 +517,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -536,7 +536,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -555,7 +555,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -574,7 +574,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -593,7 +593,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -612,7 +612,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -631,7 +631,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -650,7 +650,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -669,7 +669,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -688,7 +688,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -707,7 +707,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -726,7 +726,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -745,7 +745,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -764,7 +764,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -783,7 +783,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -802,7 +802,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -821,7 +821,7 @@
       "raw_location": "",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -840,7 +840,7 @@
       "raw_location": "Sant Cugat del Vallès - Eixample",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -859,7 +859,7 @@
       "raw_location": "Sant Cugat del Vallès - Volpelleres",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -878,7 +878,7 @@
       "raw_location": "Sant Cugat del Vallès - Mira-sol",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -897,7 +897,7 @@
       "raw_location": "Sant Cugat del Vallès - Volpelleres",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -916,7 +916,7 @@
       "raw_location": "Sant Cugat del Vallès - Mira-sol",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -935,7 +935,7 @@
       "raw_location": "Sant Cugat del Vallès - Eixample",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -954,7 +954,7 @@
       "raw_location": "Sant Cugat del Vallès - Golf-Can Trabal",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -973,7 +973,7 @@
       "raw_location": "Sant Cugat del Vallès - Centre - Estació",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -992,7 +992,7 @@
       "raw_location": "Sant Cugat del Vallès - Mira-sol",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -1011,7 +1011,7 @@
       "raw_location": "Sant Cugat del Vallès - Valldoreix",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -1030,7 +1030,7 @@
       "raw_location": "Sant Cugat del Vallès - Valldoreix",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
       "images": [],
       "features": []
@@ -1049,13 +1049,92 @@
       "raw_location": "Sant Cugat del Vallès - Valldoreix",
       "description": "",
       "first_seen": "2026-04-22T11:00:00.943869+00:00",
-      "last_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
       "is_active": true,
+      "images": [],
+      "features": []
+    },
+    {
+      "uid": "pisos:34192337117.500806",
+      "portal": "pisos",
+      "external_id": "34192337117.500806",
+      "url": "https://www.pisos.com/alquilar/piso-la_cogullada08224-34192337117_500806/",
+      "title": "Piso en Plaça de les Josefines",
+      "price": 850,
+      "rooms": 3,
+      "bathrooms": null,
+      "size_m2": 92,
+      "location": "Rubí",
+      "raw_location": "",
+      "description": "",
+      "first_seen": "2026-04-22T11:00:00.943869+00:00",
+      "last_seen": "2026-04-22T11:45:51.836362+00:00",
+      "is_active": false,
       "images": [],
       "features": []
     }
   ],
   "events": [
+    {
+      "id": 186,
+      "uid": "pisos:63431483451.142600",
+      "event_type": "new",
+      "old_price": null,
+      "new_price": 795,
+      "occurred_at": "2026-04-22T11:45:51.836362+00:00",
+      "notified": 1,
+      "title": "Piso en Carrer de Volta",
+      "url": "https://www.pisos.com/alquilar/piso-ca_naurell08224-63431483451_142600/",
+      "portal": "pisos",
+      "location": "Rubí",
+      "rooms": 4,
+      "size_m2": 114
+    },
+    {
+      "id": 187,
+      "uid": "pisos:63431483451.142600",
+      "event_type": "new",
+      "old_price": null,
+      "new_price": 795,
+      "occurred_at": "2026-04-22T11:45:51.836362+00:00",
+      "notified": 1,
+      "title": "Piso en Carrer de Volta",
+      "url": "https://www.pisos.com/alquilar/piso-ca_naurell08224-63431483451_142600/",
+      "portal": "pisos",
+      "location": "Rubí",
+      "rooms": 4,
+      "size_m2": 114
+    },
+    {
+      "id": 188,
+      "uid": "pisos:63431483451.142600",
+      "event_type": "new",
+      "old_price": null,
+      "new_price": 795,
+      "occurred_at": "2026-04-22T11:45:51.836362+00:00",
+      "notified": 1,
+      "title": "Piso en Carrer de Volta",
+      "url": "https://www.pisos.com/alquilar/piso-ca_naurell08224-63431483451_142600/",
+      "portal": "pisos",
+      "location": "Rubí",
+      "rooms": 4,
+      "size_m2": 114
+    },
+    {
+      "id": 189,
+      "uid": "pisos:34192337117.500806",
+      "event_type": "removed",
+      "old_price": 850,
+      "new_price": null,
+      "occurred_at": "2026-04-22T11:45:51.836362+00:00",
+      "notified": 1,
+      "title": "Piso en Plaça de les Josefines",
+      "url": "https://www.pisos.com/alquilar/piso-la_cogullada08224-34192337117_500806/",
+      "portal": "pisos",
+      "location": "Rubí",
+      "rooms": 3,
+      "size_m2": 92
+    },
     {
       "id": 1,
       "uid": "habitaclia:2277003488040",
@@ -4161,6 +4240,12 @@
       {
         "price": 500,
         "at": "2026-04-22T11:00:00.943869+00:00"
+      }
+    ],
+    "pisos:63431483451.142600": [
+      {
+        "price": 795,
+        "at": "2026-04-22T11:45:51.836362+00:00"
       }
     ]
   }
