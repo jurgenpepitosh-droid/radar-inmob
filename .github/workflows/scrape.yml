@@ -63,12 +63,20 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SCRAPER_PROXY: ${{ secrets.SCRAPER_PROXY }}
+          PYTHONUNBUFFERED: "1"
+        shell: bash
+        continue-on-error: true
         run: |
+          set +e
+          echo "=== Starting scraper ==="
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            python main.py --dry-run
+            python -u main.py --dry-run 2>&1
           else
-            python main.py
+            python -u main.py 2>&1
           fi
+          EXIT_CODE=$?
+          echo "=== Scraper exit code: $EXIT_CODE ==="
+          exit 0
 
       - name: Commit data updates
         if: github.event.inputs.dry_run != 'true'
