@@ -1,4 +1,4 @@
-"""Inspecciona qué selectores funcionan en cada portal."""
+"""Inspecciona que selectores funcionan en cada portal."""
 import asyncio
 import re
 from playwright.async_api import async_playwright
@@ -56,6 +56,79 @@ async def inspect(name, url):
             return
 
         # Accept cookies
-        for sel in ["#didomi-notice-agree-button", "button#onetrust-accept-btn-handler",
-                    "button:has-text('Aceptar')", "button:has-text('Acepto')"]:
+        cookie_selectors = [
+            "#didomi-notice-agree-button",
+            "button#onetrust-accept-btn-handler",
+            "button:has-text('Aceptar')",
+            "button:has-text('Acepto')",
+        ]
+        for sel in cookie_selectors:
             try:
+                b = page.locator(sel).first
+                if await b.count() and await b.is_visible(timeout=800):
+                    await b.click(timeout=1500)
+                    print(f"  cookies accepted via {sel}")
+                    break
+            except Exception:
+                continue
+
+        await asyncio.sleep(3)
+        await page.evaluate("window.scrollTo(0, document.body.scrollHeight/2)")
+        await asyncio.sleep(2)
+
+        title = await page.title()
+        html = await page.content()
+        print(f"  page title: {title}")
+        print(f"  html length: {len(html)}")
+
+        # Detect block
+        if "blocked" in title.lower() or "captcha" in html.lower()[:4000]:
+            print("  !!! BLOCKED or CAPTCHA page !!!")
+
+        # Count listings-looking elements by selector
+        print("\n  Candidate selectors (count):")
+        results = []
+        for sel in CANDIDATE_SELECTORS:
+            try:
+                count = await page.locator(sel).count()
+                if count > 0:
+                    results.append((count, sel))
+            except Exception:
+                continue
+        for count, sel in sorted(results, reverse=True)[:15]:
+            print(f"    {count:>4}  {sel}")
+
+        # Sample href patterns in page
+        hrefs = re.findall(r'href="([^"]+)"', html)
+        relevant = [h for h in hrefs if any(k in h.lower() for k in ["alquiler", "inmueble", "piso", "/d-"])][:10]
+        print("\n  Sample 'listing-like' href patterns:")
+        for h in relevant[:8]:
+            print(f"    {h[:100]}")
+
+        # Sample class names of top-candidate children
+        if results:
+            top_count, top_sel = sorted(results, reverse=True)[0]
+            print(f"\n  Classes of first 3 matches of '{top_sel}':")
+            for i in range(min(3, top_count)):
+                try:
+                    cls = await page.locator(top_sel).nth(i).get_attribute("class")
+                    if cls:
+                        print(f"    [{i}] {cls[:150]}")
+                    else:
+                        print(f"    [{i}] (none)")
+                except Exception:
+                    continue
+
+        await browser.close()
+
+
+async def main():
+    for name, url in TARGETS:
+        try:
+            await inspect(name, url)
+        except Exception as e:
+            print(f"  {name} inspect failed: {e}")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
