@@ -1,4 +1,4 @@
-"""Pisos.com scraper."""
+"""Pisos.com scraper - updated selectors based on real HTML inspection."""
 from __future__ import annotations
 
 import re
@@ -9,8 +9,6 @@ from bs4 import BeautifulSoup
 
 from core.models import Listing
 from scrapers.base import BaseScraper
-
-ID_RE = re.compile(r"/(\d{5,})/?$|/(\d{5,})/")
 
 
 class PisosComScraper(BaseScraper):
@@ -43,9 +41,12 @@ class PisosComScraper(BaseScraper):
 
                     await self._try_accept_cookies(page)
                     await self._polite_wait(1.5, 3.0)
+                    await page.evaluate("window.scrollTo(0, document.body.scrollHeight/2)")
+                    await self._polite_wait(1.0, 1.5)
 
                     html = await page.content()
                     items = self._parse(html, location_label)
+                    print(f"[pisos] {url} -> {len(items)} items")
                     if not items:
                         break
                     out.extend(items)
@@ -62,30 +63,56 @@ class PisosComScraper(BaseScraper):
         soup = BeautifulSoup(html, "lxml")
         out: List[Listing] = []
 
-        cards = soup.select("div.ad-preview, article[class*='ad']")
+        # Per diagnostic: 54 div.ad-preview__product matches
+        cards = (
+            soup.select("div.ad-preview")
+            or soup.select("div[class*='ad-preview']")
+            or soup.select("div.ad-preview__product")
+        )
+
+        # Pisos sometimes wraps each card in a container; drill up if needed
+        # But typically the 'ad-preview__product' is inside 'div.ad-preview'
+        # We prefer the outer container if it has more info.
+        seen_ids = set()
         for card in cards:
-            link_el = card.select_one("a.ad-preview__title, a[href*='/alquiler']")
+            # Find the link to the detail page (pattern: /alquiler/piso-...-NNNNNNNNN/)
+            link_el = None
+            for a in card.select("a[href]"):
+                href = a.get("href", "")
+                # Detail URLs end in /NNNNN/ and are under /alquiler/
+                if re.search(r"/alquiler/[^/]+-\d{6,}/?$", href):
+                    link_el = a
+                    break
+            if not link_el:
+                # Fallback: any anchor ending in long number
+                for a in card.select("a[href]"):
+                    href = a.get("href", "")
+                    if re.search(r"-\d{7,}/?$", href) and "/alquiler/" in href:
+                        link_el = a
+                        break
+
             if not link_el:
                 continue
+
             href = link_el.get("href", "")
             url = urljoin(self.BASE, href)
-
-            m = re.search(r"/(\d{5,})/?", url)
+            m = re.search(r"(\d{6,})/?$", url.rstrip("/"))
             if not m:
                 continue
             ext_id = m.group(1)
+            if ext_id in seen_ids:
+                continue
+            seen_ids.add(ext_id)
 
-            title = link_el.get_text(" ", strip=True)
+            title = link_el.get("title") or link_el.get_text(" ", strip=True) or "Anuncio Pisos.com"
 
-            price_el = card.select_one(".ad-preview__price, [class*='price']")
-            price = self._extract_price(price_el.get_text() if price_el else "")
+            card_text = card.get_text(" ", strip=True)
+            price = self._extract_price(card_text)
             if not price:
                 continue
 
-            feats = card.select(".ad-preview__char-value, [class*='char'], [class*='feature']")
-            feats_text = " ".join(f.get_text(" ", strip=True) for f in feats)
-            rooms = self._extract_rooms(feats_text)
-            size = self._extract_size(feats_text)
+            rooms = self._extract_rooms(card_text)
+            size = self._extract_size(card_text)
 
             out.append(Listing(
                 portal=self.portal_name,
@@ -103,10 +130,12 @@ class PisosComScraper(BaseScraper):
     def _extract_price(text: str) -> int | None:
         if not text:
             return None
-        m = re.search(r"([\d\.]+)\s*€", text.replace("\u00a0", " "))
-        if not m:
-            return None
-        return int(re.sub(r"[^\d]", "", m.group(1)))
+        matches = re.findall(r"(\d{3,5}(?:[\.,]\d{3})?)\s*€", text.replace("\u00a0", " "))
+        for m in matches:
+            n = int(re.sub(r"[^\d]", "", m))
+            if 200 <= n <= 9000:
+                return n
+        return None
 
     @staticmethod
     def _extract_rooms(text: str) -> int | None:
@@ -115,5 +144,9 @@ class PisosComScraper(BaseScraper):
 
     @staticmethod
     def _extract_size(text: str) -> int | None:
-        m = re.search(r"(\d+)\s*m", text)
-        return int(m.group(1)) if m else None
+        m = re.search(r"(\d{2,4})\s*m(?:²|2)?\b", text)
+        if m:
+            n = int(m.group(1))
+            if 15 <= n <= 1000:
+                return n
+        return None
