@@ -1,93 +1,50 @@
-"""Script de diagnóstico para saber qué está pasando."""
-import sys
+"""Audita todos los archivos comparando tamaños y primera línea."""
 import os
-import traceback
 
-print("=" * 60, flush=True)
-print("DIAG · Python version:", sys.version, flush=True)
-print("DIAG · cwd:", os.getcwd(), flush=True)
-print("DIAG · files:", sorted(os.listdir("."))[:30], flush=True)
-print("=" * 60, flush=True)
+EXPECTED = {
+    "main.py":              (3200, '"""Entry point for the scraper.'),
+    "config.yml":           (2000, "db_path: data/listings.db"),
+    "requirements.txt":     (150, "playwright==1.47.0"),
+    "core/__init__.py":     (0, ""),
+    "core/models.py":       (1500, '"""Core data models."""'),
+    "core/storage.py":      (10000, '"""SQLite storage'),
+    "core/notifier.py":     (4500, '"""Telegram notifier."""'),
+    "scrapers/__init__.py": (570, '"""Scraper registry'),
+    "scrapers/base.py":     (3400, '"""Base scraper'),
+    "scrapers/idealista.py":(9000, '"""Idealista scraper.'),
+    "scrapers/fotocasa.py": (5000, '"""Fotocasa scraper'),
+    "scrapers/habitaclia.py":(4200, '"""Habitaclia scraper'),
+    "scrapers/pisos_com.py":(4000, '"""Pisos.com scraper."""'),
+}
 
-print("\n>>> Test 1: import yaml", flush=True)
-try:
-    import yaml
-    print("   OK", flush=True)
-except Exception as e:
-    print("   FAIL:", e, flush=True)
-    traceback.print_exc()
+print("=" * 70)
+print("AUDITORÍA")
+print("=" * 70)
+print(f"{'FILE':<30} {'SIZE':>8} {'EXPECTED':>10} {'STATUS':<10}")
+print("-" * 70)
 
-print("\n>>> Test 2: load config.yml", flush=True)
-try:
-    cfg = yaml.safe_load(open("config.yml").read())
-    print("   OK · portals:", list(cfg.get("portals", {}).keys()), flush=True)
-except Exception as e:
-    print("   FAIL:", e, flush=True)
-    traceback.print_exc()
+problems = []
+for path, (expected_size, expected_start) in EXPECTED.items():
+    if not os.path.exists(path):
+        print(f"{path:<30} {'-':>8} {expected_size:>10} MISSING")
+        problems.append(path)
+        continue
+    content = open(path, encoding="utf-8", errors="replace").read()
+    size = len(content)
+    first_line = content.split("\n", 1)[0][:50] if content else "(empty)"
 
-print("\n>>> Test 3: import core modules", flush=True)
-try:
-    sys.path.insert(0, ".")
-    from core.models import Listing
-    from core.storage import Storage
-    from core.notifier import TelegramNotifier
-    print("   OK", flush=True)
-except Exception as e:
-    print("   FAIL:", e, flush=True)
-    traceback.print_exc()
+    ok_size = size > expected_size * 0.7  # at least 70% of expected
+    ok_start = (expected_start == "" and size < 20) or first_line.startswith(expected_start[:25])
+    status = "OK" if (ok_size and ok_start) else "BROKEN"
+    if status == "BROKEN":
+        problems.append(path)
 
-print("\n>>> Test 4: import scrapers", flush=True)
-try:
-    from scrapers import REGISTRY
-    print("   OK · registry keys:", list(REGISTRY.keys()), flush=True)
-except Exception as e:
-    print("   FAIL:", e, flush=True)
-    traceback.print_exc()
+    print(f"{path:<30} {size:>8} {expected_size:>10} {status:<10}")
+    if status == "BROKEN":
+        print(f"  └─ first line: {first_line!r}")
 
-print("\n>>> Test 5: basic HTTP fetch (github.com)", flush=True)
-try:
-    import httpx
-    r = httpx.get("https://www.github.com", timeout=10, follow_redirects=True)
-    print(f"   OK · status: {r.status_code}", flush=True)
-except Exception as e:
-    print("   FAIL:", e, flush=True)
-
-print("\n>>> Test 6: fetch idealista homepage (no scraping)", flush=True)
-try:
-    r = httpx.get(
-        "https://www.idealista.com/",
-        timeout=15,
-        follow_redirects=True,
-        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128.0.0.0 Safari/537.36"},
-    )
-    print(f"   status: {r.status_code} · length: {len(r.text)}", flush=True)
-    if r.status_code == 403 or "blocked" in r.text.lower()[:2000]:
-        print("   → Idealista BLOQUEA la IP del runner. Necesitamos proxy.", flush=True)
-    elif r.status_code == 200:
-        print("   → Idealista acepta la IP. El problema está en los selectores.", flush=True)
-except Exception as e:
-    print("   FAIL:", e, flush=True)
-
-print("\n>>> Test 7: fetch fotocasa homepage", flush=True)
-try:
-    r = httpx.get(
-        "https://www.fotocasa.es/",
-        timeout=15,
-        follow_redirects=True,
-        headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128.0.0.0 Safari/537.36"},
-    )
-    print(f"   status: {r.status_code} · length: {len(r.text)}", flush=True)
-except Exception as e:
-    print("   FAIL:", e, flush=True)
-
-print("\n>>> Test 8: playwright import", flush=True)
-try:
-    from playwright.async_api import async_playwright
-    print("   OK", flush=True)
-except Exception as e:
-    print("   FAIL:", e, flush=True)
-    traceback.print_exc()
-
-print("\n" + "=" * 60, flush=True)
-print("DIAG COMPLETE", flush=True)
-print("=" * 60, flush=True)
+print("=" * 70)
+print(f"BROKEN FILES ({len(problems)}):")
+for p in problems:
+    print(f"  - {p}")
+print("=" * 70)
