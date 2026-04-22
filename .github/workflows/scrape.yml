@@ -55,6 +55,9 @@ jobs:
         if: steps.pw-cache.outputs.cache-hit == 'true'
         run: python -m playwright install-deps chromium
 
+      - name: Diagnostic
+        run: python diag.py
+        
       - name: Run scraper
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
